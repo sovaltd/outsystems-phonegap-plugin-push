@@ -44,6 +44,17 @@ function getPlatformPath(context) {
 }
 
 /**
+ * Get the full path to the platform directory
+ * @param {object} context Cordova context
+ * @returns {string} absolute path to platforms directory
+ */
+function getPluginRootPath(context) {
+    var projectRoot = context.opts.projectRoot;
+    var platform = context.opts.plugin.platform;
+    return path.join(projectRoot, "plugins", context.opts.plugin.id);
+}
+
+/**
  * Get absolute path to the www folder inside the platform
  * and not the root www folder from the cordova project.
  * Example:
@@ -74,4 +85,5 @@ module.exports = {
     rmNonEmptyDir: rmNonEmptyDir,
     getPlatformPath: getPlatformPath,
     getWwwPath: getWwwPath,
+    getPluginRootPath: getPluginRootPath
 };

@@ -68,7 +68,7 @@ function getGoogleServiceTargetDir(context) {
             }
         }
         case "ios":
-            return platformPath;
+            return utils.getPluginRootPath(context);
         default:
             return undefined;
     }
@@ -127,7 +127,7 @@ module.exports = function(context) {
         // if zip file is present, lets unzip it!
         if (!zipFile) {
             return reject(
-                "Failed to install Pushwoosh plugin. Reason: Configuration zip file not found."
+                "Failed to install plugin. Reason: Configuration zip file not found."
             );
         }
         var unzipedResourcesDir = unzip(zipFile, configPath, prefZipFilename);
@@ -141,7 +141,7 @@ module.exports = function(context) {
 
         if (!copyWithSuccess) {
             return reject(
-                "Failed to install pushwoosh plugin. Reason: Unable to copy google services file to project."
+                "Failed to install plugin. Reason: Unable to copy google services file to project."
             );
         }
         return resolve();
