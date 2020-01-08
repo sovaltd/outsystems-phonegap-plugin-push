@@ -13,6 +13,7 @@
 
   <hook type="before_plugin_install" src="hooks/outsystems/handle_google_services.js" />
   <hook type="after_plugin_install" src="hooks/outsystems/google_services_cleanup.js" />
+    <hook type="after_plugin_install" src="hooks/outsystems/copy_fcm_resources.js" />
 
   <engines>
     <engine name="cordova" version=">=7.1.0"/>
