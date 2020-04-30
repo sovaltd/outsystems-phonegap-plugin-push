@@ -136,69 +136,73 @@ module.exports = function (ctx) {
       // Retrieve preferences values
       var prefIconName = configParser.getPreference("FCMIconName", "android");//"ic_notification";//
       var prefZipFilename = configParser.getGlobalPreference("FCMResourcesFile");//"notification-resources";//
-      
-      iconName = prefIconName;
-      addDefaultIconManifest(projectRoot);
+      if(prefIconName && prefZipFilename != undefined){
+        iconName = prefIconName;
+        addDefaultIconManifest(projectRoot);
 
-      // Read value from preferences
-      for (var key in android_preference_icon_name) {
-        if (android_preference_icon_name.hasOwnProperty(key)) {
-          var prefName = android_preference_icon_name[key];
-          var value = configParser.getPreference(prefName, "android");
-          Object.defineProperty(icon_preferences_values, key, {
-            enumerable: true,
-            configurable: false,
-            writable: false,
-            value: value
-          });
+        // Read value from preferences
+        for (var key in android_preference_icon_name) {
+          if (android_preference_icon_name.hasOwnProperty(key)) {
+            var prefName = android_preference_icon_name[key];
+            var value = configParser.getPreference(prefName, "android");
+            Object.defineProperty(icon_preferences_values, key, {
+              enumerable: true,
+              configurable: false,
+              writable: false,
+              value: value
+            });
+          }
         }
-      }
-  
-  
-      if (!prefZipFilename) {
-        console.log("Aborting FCM resources handling. Reason: FCMResourcesFile preference not set.");
-        defer.resolve();
-        return defer;
-      }
-  
-      var resourcesFolder = getResourcesFolder(context);
-      // unzip the resources file, if any
-      var zipFile = getZipFile(resourcesFolder, prefZipFilename);
-  
-      // if zip file is present, lets unzip it!
-      if (!zipFile)  {
-        console.log("Aborting FCM resources handling. Reason: Resources zip file not found.");
-        defer.resolve();
-        return defer;
-      }
-  
-      var unzipedResourcesDir = unzip(zipFile, resourcesFolder, prefZipFilename);
-  
-      try {
-        var hasResources = fs.readdirSync(unzipedResourcesDir);
-        if (!hasResources) {
-          console.log("Aborting FCM resources handling for android. Reason: No resources found or empty zip file.");
+    
+    
+        if (!prefZipFilename) {
+          console.log("Aborting FCM resources handling. Reason: FCMResourcesFile preference not set.");
           defer.resolve();
           return defer;
         }
-      } catch (err) {
-        if (err.code === "ENOENT") {
-          console.log("Aborting FCM resources handling for android. Reason: No resources found.");
+    
+        var resourcesFolder = getResourcesFolder(context);
+        // unzip the resources file, if any
+        var zipFile = getZipFile(resourcesFolder, prefZipFilename);
+    
+        // if zip file is present, lets unzip it!
+        if (!zipFile)  {
+          console.log("Aborting FCM resources handling. Reason: Resources zip file not found.");
           defer.resolve();
           return defer;
         }
-      }
-  
-      var handleIconsPromiseRes = handleAndroidIcons(androidFolder, prefIconName, icon_preferences_values, unzipedResourcesDir);
-      handleIconsPromiseRes.then(function (resolve, reject) {
+    
+        var unzipedResourcesDir = unzip(zipFile, resourcesFolder, prefZipFilename);
+    
+        try {
+          var hasResources = fs.readdirSync(unzipedResourcesDir);
+          if (!hasResources) {
+            console.log("Aborting FCM resources handling for android. Reason: No resources found or empty zip file.");
+            defer.resolve();
+            return defer;
+          }
+        } catch (err) {
+          if (err.code === "ENOENT") {
+            console.log("Aborting FCM resources handling for android. Reason: No resources found.");
+            defer.resolve();
+            return defer;
+          }
+        }
+    
+        var handleIconsPromiseRes = handleAndroidIcons(androidFolder, prefIconName, icon_preferences_values, unzipedResourcesDir);
+        handleIconsPromiseRes.then(function (resolve, reject) {
 
-        removeDir(unzipedResourcesDir);
-        removeDir(zipFile);
-        
-        return true;
-      });
-      defer.resolve(handleIconsPromiseRes);
-      return defer.promise;
+          removeDir(unzipedResourcesDir);
+          removeDir(zipFile);
+          
+          return true;
+        });
+        defer.resolve(handleIconsPromiseRes);
+        return defer.promise;
+      }else{
+        defer.resolve();
+        return defer.promise;
+      }
     }
     
     /**
