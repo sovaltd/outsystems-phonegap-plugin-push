@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OutSystemsExperts/outsystems-phonegap-plugin-push.git"
+    "url": "git+https://github.com/sovaltd/outsystems-phonegap-plugin-push.git"
   },
   "keywords": [
     "ecosystem:cordova",
@@ -39,12 +39,10 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/OutSystemsExperts/outsystems-phonegap-plugin-push/issues"
+    "url": "https://github.com/sovaltd/outsystems-phonegap-plugin-push/issues"
   },
-  "homepage": "https://github.com/OutSystemsExperts/outsystems-phonegap-plugin-push#readme",
-"dependencies": {
-  "fs-extra": "^11.1.1",
-  "cordova-lib": "^10.0.0"
-}
-
+  "homepage": "https://github.com/sovaltd/outsystems-phonegap-plugin-push#readme",
+  "dependencies": {
+    "fs-extra": "^11.1.1"
+  }
 }
