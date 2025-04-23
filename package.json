@@ -1,6 +1,6 @@
 {
   "name": "outsystems-phonegap-plugin-push",
-  "version": "2.2.3-os1",
+  "version": "2.2.4-os1-fix1",
   "description": "This plugin allows your application to receive push notifications on Android and iOS.",
   "cordova": {
     "id": "outsystems-phonegap-plugin-push",
